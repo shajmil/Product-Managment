@@ -1,0 +1,92 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Smartphone X",
+      "description": "Latest flagship smartphone with cutting-edge features, high-resolution camera, and all-day battery life.",
+      "price": 899.99,
+      "imageUrl": "https://source.unsplash.com/random/800x600/?smartphone",
+      "category": "Electronics",
+      "inStock": true,
+      "createdAt": "2023-01-15T10:30:00.000Z",
+      "updatedAt": "2023-01-15T10:30:00.000Z"
+    },
+    {
+      "id": 2,
+      "name": "Laptop Pro",
+      "description": "Powerful laptop for professionals with high-performance CPU, ample storage, and stunning display.",
+      "price": 1299.99,
+      "imageUrl": "https://source.unsplash.com/random/800x600/?laptop",
+      "category": "Electronics",
+      "inStock": true,
+      "createdAt": "2023-01-10T14:20:00.000Z",
+      "updatedAt": "2023-01-10T14:20:00.000Z"
+    },
+    {
+      "id": 3,
+      "name": "Bluetooth Headphones",
+      "description": "Wireless headphones with noise cancellation and exceptional sound quality for immersive listening experience.",
+      "price": 199.99,
+      "imageUrl": "https://source.unsplash.com/random/800x600/?headphones",
+      "category": "Electronics",
+      "inStock": true,
+      "createdAt": "2023-01-20T09:15:00.000Z",
+      "updatedAt": "2023-01-20T09:15:00.000Z"
+    },
+    {
+      "id": 4,
+      "name": "Fitness Tracker",
+      "description": "Track your activity, heart rate, and sleep patterns with this advanced fitness wearable.",
+      "price": 79.99,
+      "imageUrl": "https://source.unsplash.com/random/800x600/?fitness-tracker",
+      "category": "Electronics",
+      "inStock": false,
+      "createdAt": "2023-01-05T11:45:00.000Z",
+      "updatedAt": "2023-01-05T11:45:00.000Z"
+    },
+    {
+      "id": 5,
+      "name": "Coffee Maker",
+      "description": "Automatic coffee maker with programmable timer and multiple brewing options for the perfect cup every time.",
+      "price": 129.99,
+      "imageUrl": "https://source.unsplash.com/random/800x600/?coffee-maker",
+      "category": "Home & Kitchen",
+      "inStock": true,
+      "createdAt": "2023-01-08T13:10:00.000Z",
+      "updatedAt": "2023-01-08T13:10:00.000Z"
+    },
+    {
+      "id": 6,
+      "name": "Casual T-Shirt",
+      "description": "Comfortable and stylish t-shirt made from premium cotton fabric, perfect for everyday wear.",
+      "price": 24.99,
+      "imageUrl": "https://source.unsplash.com/random/800x600/?tshirt",
+      "category": "Clothing",
+      "inStock": true,
+      "createdAt": "2023-01-12T10:30:00.000Z",
+      "updatedAt": "2023-01-12T10:30:00.000Z"
+    },
+    {
+      "id": 7,
+      "name": "Sci-Fi Novel",
+      "description": "Bestselling science fiction novel that takes readers on an epic journey through space and time.",
+      "price": 15.99,
+      "imageUrl": "https://source.unsplash.com/random/800x600/?book",
+      "category": "Books",
+      "inStock": true,
+      "createdAt": "2023-01-18T16:20:00.000Z",
+      "updatedAt": "2023-01-18T16:20:00.000Z"
+    },
+    {
+      "id": 8,
+      "name": "Yoga Mat",
+      "description": "Non-slip, eco-friendly yoga mat with perfect cushioning for comfortable practice.",
+      "price": 39.99,
+      "imageUrl": "https://source.unsplash.com/random/800x600/?yoga-mat",
+      "category": "Sports",
+      "inStock": false,
+      "createdAt": "2023-01-22T08:45:00.000Z",
+      "updatedAt": "2023-01-22T08:45:00.000Z"
+    }
+  ]
+} 

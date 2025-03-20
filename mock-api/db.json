@@ -1,0 +1,26 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Laptop",
+      "description": "High-performance laptop with 16GB RAM",
+      "price": 999.99,
+      "imageUrl": "https://via.placeholder.com/150",
+      "quantity": 10,
+      "category": "Electronics",
+      "createdAt": "2023-06-15T10:00:00Z",
+      "updatedAt": "2023-06-15T10:00:00Z"
+    },
+    {
+      "id": 2,
+      "name": "Smartphone",
+      "description": "Latest smartphone with 5G capability",
+      "price": 599.99,
+      "imageUrl": "https://via.placeholder.com/150",
+      "quantity": 15,
+      "category": "Electronics",
+      "createdAt": "2023-06-16T10:00:00Z",
+      "updatedAt": "2023-06-16T10:00:00Z"
+    }
+  ]
+} 
