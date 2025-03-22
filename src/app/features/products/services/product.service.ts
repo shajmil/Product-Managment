@@ -7,7 +7,7 @@ import { Product, ProductCreateUpdate } from '../models/product.model';
   providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl = 'http://localhost:3000/products';
+  private apiUrl = 'https://prodect-managemnt-mockapi-production.up.railway.app/products';
 
   constructor(private http: HttpClient) {}
 
