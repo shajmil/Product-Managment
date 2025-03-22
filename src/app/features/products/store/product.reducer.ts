@@ -4,11 +4,13 @@ import { Product } from '../models/product.model';
 import * as ProductActions from './product.actions';
 
 export interface ProductState extends EntityState<Product> {
-  selectedProductId: number | null;
+  selectedProductId: string | null;
   loading: boolean;
   error: string | null;
-  currentPage: number;
+  page: number;
   itemsPerPage: number;
+  totalCount: number; 
+  
 }
 
 export const adapter: EntityAdapter<Product> = createEntityAdapter<Product>();
@@ -17,21 +19,26 @@ export const initialState: ProductState = adapter.getInitialState({
   selectedProductId: null,
   loading: false,
   error: null,
-  currentPage: 1,
-  itemsPerPage: 10
+  page: 1,
+  itemsPerPage: 8,
+  totalCount: 0
 });
 
 export const productReducer = createReducer(
   initialState,
   
-  // Load Products
   on(ProductActions.loadProducts, (state) => ({
     ...state,
     loading: true,
     error: null
   })),
-  on(ProductActions.loadProductsSuccess, (state, { products }) => 
-    adapter.setAll(products, { ...state, loading: false })
+  on(ProductActions.loadProductsSuccess, (state, { products, totalCount }) => 
+    
+    adapter.setAll(products, { 
+      ...state, 
+      loading: false,
+      totalCount: totalCount ||0
+    })
   ),
   on(ProductActions.loadProductsFailure, (state, { error }) => ({
     ...state,
@@ -39,7 +46,6 @@ export const productReducer = createReducer(
     error
   })),
   
-  // Load Single Product
   on(ProductActions.loadProduct, (state) => ({
     ...state,
     loading: true,
@@ -58,7 +64,6 @@ export const productReducer = createReducer(
     error
   })),
   
-  // Create Product
   on(ProductActions.createProduct, (state) => ({
     ...state,
     loading: true,
@@ -73,7 +78,6 @@ export const productReducer = createReducer(
     error
   })),
   
-  // Update Product
   on(ProductActions.updateProduct, (state) => ({
     ...state,
     loading: true,
@@ -91,7 +95,6 @@ export const productReducer = createReducer(
     error
   })),
   
-  // Delete Product
   on(ProductActions.deleteProduct, (state) => ({
     ...state,
     loading: true,
@@ -104,7 +107,15 @@ export const productReducer = createReducer(
     ...state,
     loading: false,
     error
-  }))
+  })),
+
+  on(ProductActions.setPageConfig, (state, { page, limit }) => ({
+    ...state,
+    page: page,
+    loading: true,
+    itemsPerPage: limit
+  })),
+
 );
 
 export const { selectIds, selectEntities, selectAll, selectTotal } = adapter.getSelectors(); 

@@ -3,22 +3,22 @@ import { Product, ProductCreateUpdate } from '../models/product.model';
 
 export const loadProducts = createAction(
   '[Product] Load Products',
-  props<{ page: number; limit: number }>()
+  props<{ page?: number; limit?: number }>()
 );
 
 export const loadProductsSuccess = createAction(
   '[Product] Load Products Success',
-  props<{ products: Product[] }>()
+  props<{ products: Product[], totalCount?: number }>()
 );
 
 export const loadProductsFailure = createAction(
   '[Product] Load Products Failure',
-  props<{ error: any }>()
+  props<{ error: string }>()
 );
 
 export const loadProduct = createAction(
   '[Product] Load Product',
-  props<{ id: number }>()
+  props<{ id: string }>()
 );
 
 export const loadProductSuccess = createAction(
@@ -28,7 +28,7 @@ export const loadProductSuccess = createAction(
 
 export const loadProductFailure = createAction(
   '[Product] Load Product Failure',
-  props<{ error: any }>()
+  props<{ error: string }>()
 );
 
 export const createProduct = createAction(
@@ -43,12 +43,12 @@ export const createProductSuccess = createAction(
 
 export const createProductFailure = createAction(
   '[Product] Create Product Failure',
-  props<{ error: any }>()
+  props<{ error: string }>()
 );
 
 export const updateProduct = createAction(
   '[Product] Update Product',
-  props<{ id: number; product: ProductCreateUpdate }>()
+  props<{ id: string; product: ProductCreateUpdate }>()
 );
 
 export const updateProductSuccess = createAction(
@@ -58,20 +58,34 @@ export const updateProductSuccess = createAction(
 
 export const updateProductFailure = createAction(
   '[Product] Update Product Failure',
-  props<{ error: any }>()
+  props<{ error: string }>()
 );
 
 export const deleteProduct = createAction(
   '[Product] Delete Product',
-  props<{ id: number }>()
+  props<{ id: string }>()
 );
 
 export const deleteProductSuccess = createAction(
   '[Product] Delete Product Success',
-  props<{ id: number }>()
+  props<{ id: string }>()
 );
 
 export const deleteProductFailure = createAction(
   '[Product] Delete Product Failure',
-  props<{ error: any }>()
-); 
+  props<{ error: string }>()
+);
+
+export const setSelectedProduct = createAction(
+  '[Product] Set Selected Product',
+  props<{ id: string }>()
+);
+
+export const clearSelectedProduct = createAction(
+  '[Product] Clear Selected Product'
+);
+
+export const setPageConfig = createAction(
+  '[Product] Set Page Config',
+  props<{ page: number; limit: number }>()
+);

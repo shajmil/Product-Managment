@@ -1,28 +1,46 @@
 import { inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { ProductService } from '../services/product.service';
 import * as ProductActions from './product.actions';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { select, Store } from '@ngrx/store';
+import * as ProductSelectors from './product.selectors';
+
 
 export class ProductEffects {
   private actions$ = inject(Actions);
   private productService = inject(ProductService);
+  private snackBar = inject(MatSnackBar);
+  private router = inject(Router)
+  private store = inject(Store);
+
+
   
-  loadProducts$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(ProductActions.loadProducts),
-      switchMap((action) => {
-        const page = action.page ?? 1;
-        const limit = action.limit ?? 10;
+    loadProducts$ = createEffect(() => {
+      return this.actions$.pipe(
+        ofType(ProductActions.loadProducts),
+        switchMap((action) => {
+          console.log('action: ', action);
+          let page = action.page;
+          console.log('page: ', page);
+          let limit = action.limit;
+          console.log('limit: ', limit);
+
         
-        return this.productService.getProducts(page, limit).pipe(
-          map(products => ProductActions.loadProductsSuccess({ products })),
-          catchError(error => of(ProductActions.loadProductsFailure({ error: error.message })))
-        );
-      })
-    );
-  });
+          
+          return this.productService.getProducts(page, limit).pipe(
+            map(response => ProductActions.loadProductsSuccess({ 
+              products: response.items,
+              totalCount: response.total 
+            })),
+            catchError(error => of(ProductActions.loadProductsFailure({ error: error.message })))
+          );
+        })
+      );
+    });
 
   loadProduct$ = createEffect(() => {
     return this.actions$.pipe(
@@ -43,6 +61,19 @@ export class ProductEffects {
       ))
     );
   });
+  createProductFailure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(ProductActions.createProductFailure),
+        tap((action) => {
+          this.snackBar.open(`Failed to create product: ${action.error}`, 'Close', {
+            duration: 3000,
+            panelClass: 'error-snackbar'
+          });
+        })
+      ),
+    { dispatch: false }
+  );
 
   updateProduct$ = createEffect(() => {
     return this.actions$.pipe(
@@ -53,14 +84,89 @@ export class ProductEffects {
       ))
     );
   });
-
-  deleteProduct$ = createEffect(() => {
+  createProductSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(ProductActions.createProductSuccess),
+        tap(() => {
+          this.router.navigate(['/products']);
+        }),
+        map(() => ProductActions.loadProducts({ page: 1, limit: 10 }))
+      )
+  );
+  
+  updateProductSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(ProductActions.updateProductSuccess),
+        tap(() => {
+          this.router.navigate(['/products']);
+        }),
+        map(() => ProductActions.loadProducts({ page: 1, limit: 10 }))
+      )
+  );
+  deleteProductSuccess$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(ProductActions.deleteProduct),
-      mergeMap((action) => this.productService.deleteProduct(action.id).pipe(
-        map(() => ProductActions.deleteProductSuccess({ id: action.id })),
-        catchError(error => of(ProductActions.deleteProductFailure({ error: error.message })))
-      ))
+      ofType(ProductActions.deleteProductSuccess),
+      switchMap(() => {
+        let page = 1;
+        let limit = 8;
+        
+        this.store.select(ProductSelectors.selectCurrentPage).subscribe(currentPage => {
+          page = currentPage;
+        }).unsubscribe();
+        
+        console.log('page: ', page);
+        this.store.select(ProductSelectors.selectItemsPerPage).subscribe(itemsPerPage => {
+          limit = itemsPerPage;
+        }).unsubscribe();
+        console.log('limit: ', limit);
+        
+        this.store.select(ProductSelectors.selectAllProducts).subscribe(products => {
+          console.log('products: ', products);
+          if (products.length == 0 && page > 1) {
+            page = page - 1;
+            this.store.dispatch(ProductActions.setPageConfig({ page, limit }));
+          }
+        }).unsubscribe();
+        
+        return of(ProductActions.loadProducts({ page, limit }));
+      })
     );
   });
+
+
+  loadProductsOnPageChange$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ProductActions.setPageConfig), 
+      withLatestFrom(
+        this.store.pipe(select(ProductSelectors.selectCurrentPage)), 
+        this.store.pipe(select(ProductSelectors.selectItemsPerPage)) 
+      ),
+      switchMap(([_, page, limit]) => {
+        console.log('limit: ', limit);
+        console.log('page: ', page);
+  
+        return this.productService.getProducts(page, limit).pipe(
+          map(response => ProductActions.loadProductsSuccess({ 
+            products: response.items,
+            totalCount: response.total 
+          })),
+          catchError(error => of(ProductActions.loadProductsFailure({ error })))
+        );
+      })
+    )
+  );
+  
+deleteProduct$ = createEffect(() => 
+  this.actions$.pipe(
+    ofType(ProductActions.deleteProduct),
+    switchMap(({ id }) => 
+      this.productService.deleteProduct(id).pipe(
+        map(() => ProductActions.deleteProductSuccess({ id })),
+        catchError(error => of(ProductActions.deleteProductFailure({ error })))
+      )
+    )
+  )
+);
 }

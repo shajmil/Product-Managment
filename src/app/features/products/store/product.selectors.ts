@@ -20,7 +20,7 @@ export const selectProductError = createSelector(
 
 export const selectCurrentPage = createSelector(
   selectProductState,
-  (state: ProductState) => state.currentPage
+  (state: ProductState) => state.page
 );
 
 export const selectItemsPerPage = createSelector(
@@ -41,3 +41,13 @@ export const selectSelectedProduct = createSelector(
     return state.entities[selectedId];
   }
 ); 
+
+export const selectTotalCount = createSelector(
+  selectProductState,
+  (state: ProductState) => state.totalCount || 0
+);
+
+export const selectTotalProducts = createSelector(
+  selectAllProducts,
+  (products) => products.length
+);

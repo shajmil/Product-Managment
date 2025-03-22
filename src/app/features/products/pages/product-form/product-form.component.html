@@ -1,0 +1,134 @@
+<div class="min-h-screen bg-zinc-900 py-10">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="flex justify-between items-center mb-8">
+        <a [routerLink]="['/products']" class="text-gray-300 hover:text-white flex items-center group">
+          <mat-icon class="mr-2 text-green-400 group-hover:-translate-x-1 transition-transform duration-200">arrow_back</mat-icon>
+          <span class="font-semibold text-lg tracking-wide">Back to Products</span>
+        </a>
+        <div class="bg-[#121212b3] text-green-400 px-5 py-1 rounded-lg text-sm font-semibold shadow-md">
+          {{ isEditMode ? 'Edit Mode' : 'Create Mode' }}
+        </div>
+      </div>
+  
+      <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+        <section class="bg-zinc-800 shadow-2xl rounded-xl border border-gray-700 backdrop-blur-md p-8">
+          <h1 class="text-2xl font-extrabold text-white tracking-wide mb-6">
+            {{ isEditMode ? 'Edit' : 'Add New' }} Product
+          </h1>
+          <div class="grid md:grid-cols-2 gap-10">
+            <div>
+              <div class="space-y-6">
+                <div>
+                  <label for="name" class="block text-gray-300 mb-2 font-medium">Product Name</label>
+                  <input type="text" id="name" formControlName="name"
+                    class="w-full bg-transparent text-white border border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#32CD32] focus:border-[#32CD32]"
+                    [ngClass]="{ 'border-red-500 focus:ring-red-500': productForm.get('name')?.invalid && productForm.get('name')?.touched }">
+                  @if (productForm.get('name')?.invalid && productForm.get('name')?.touched) {
+                    <p class="mt-1 text-sm text-red-500 animate-pulse">
+                      Name is required
+                    </p>
+                  }
+                </div>
+      
+                <div>
+                  <label for="price" class="block text-gray-300 mb-2 font-medium">Base Price</label>
+                  <input type="number" id="price" formControlName="price"
+                    class="w-full bg-transparent text-white border border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#32CD32] focus:border-[#32CD32]"
+                    [ngClass]="{ 'border-red-500 focus:ring-red-500': productForm.get('price')?.invalid && productForm.get('price')?.touched }">
+                  @if (productForm.get('price')?.invalid && productForm.get('price')?.touched) {
+                    <p class="mt-1 text-sm text-red-500 animate-pulse">
+                      {{ productForm.get('price')?.errors?.['required'] ? 'Price is required' : 'Price must be greater than 0' }}
+                    </p>
+                  }
+                </div>
+      
+                <div>
+                  <label for="description" class="block text-gray-300 mb-2 font-medium">Product Description</label>
+                  <textarea id="description" rows="4" formControlName="description"
+                    class="w-full bg-transparent text-white border border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#32CD32] focus:border-[#32CD32]"
+                    [ngClass]="{ 'border-red-500 focus:ring-red-500': productForm.get('description')?.invalid && productForm.get('description')?.touched }"></textarea>
+                  @if (productForm.get('description')?.invalid && productForm.get('description')?.touched) {
+                    <p class="mt-1 text-sm text-red-500 animate-pulse">
+                      Description is required
+                    </p>
+                  }
+                </div>
+                <div>
+                  <label for="quantity" class="block text-sm font-medium text-gray-300 mb-2 ">Stock</label>
+                  <input 
+                    type="number" 
+                    id="quantity" 
+                    formControlName="quantity"
+                    placeholder="0"
+                    class="w-full px-3 py-2 border text-white border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500"
+                    [ngClass]="{ 'border-red-500 focus:ring-red-500': productForm.get('quantity')?.invalid && productForm.get('price')?.touched }">
+      
+                  @if (productForm.get('quantity')?.invalid && productForm.get('quantity')?.touched) {
+                    <p class="mt-1 text-sm text-red-500 animate-pulse">
+                      @if (productForm.get('quantity')?.errors?.['required']) {
+                        Quantity is required
+                      } @else if (productForm.get('quantity')?.errors?.['min']) {
+                        Quantity cannot be negative
+                      }
+                    </p>
+                  }
+                </div>
+      
+                <div>
+                  <label for="category" class="block text-gray-300 mb-2 font-medium">Category</label>
+                  <select id="category" formControlName="category"
+                    class="w-full bg-zinc-800 text-white border border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#32CD32] focus:border-[#32CD32]"
+                    [ngClass]="{ 'border-red-500 focus:ring-red-500': productForm.get('category')?.invalid && productForm.get('category')?.touched }">
+                    <option class="bg-zinc-800 text-white" value="" disabled selected>Select category</option>
+                    <option class="bg-zinc-800 text-white" value="Electronics">Electronics</option>
+                    <option class="bg-zinc-800 text-white" value="Clothing">Clothing</option>
+                    <option class="bg-zinc-800 text-white" value="Books">Books</option>
+                    <option class="bg-zinc-800 text-white" value="Home & Kitchen">Home & Kitchen</option>
+                    <option class="bg-zinc-800 text-white" value="Toys & Games">Toys & Games</option>
+                  </select>
+                  @if (productForm.get('category')?.invalid && productForm.get('category')?.touched) {
+                    <p class="mt-1 text-sm text-red-500 animate-pulse">
+                      Category is required
+                    </p>
+                  }
+                </div>
+              </div>
+      
+              <div class="mt-8 flex justify-between items-center">
+                <a [routerLink]="['/products']"
+                  class="px-6 py-2 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-800 transition-all">
+                  Cancel
+                </a>
+      
+                <button type="submit"
+                  class="px-6 py-2 bg-green-400 text-black font-semibold rounded-lg shadow-lg hover:scale-105 transition-transform flex items-center disabled:opacity-50">
+                  <mat-icon class="mr-2">{{ isEditMode ? 'update' : 'add_circle' }}</mat-icon>
+                  {{ isEditMode ? 'Update' : 'Add' }} Product
+                </button>
+              </div>
+            </div>
+            <div class="flex flex-col space-y-4">
+              <label for="imageUrl" class="block text-gray-300 mb-2 font-medium">Image URL</label>
+            
+              <input type="text" id="imageUrl" formControlName="imageUrl"
+                class="w-full bg-transparent text-white border border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#32CD32] focus:border-[#32CD32]"
+                placeholder="Enter image URL"
+                [ngClass]="{ 'border-red-500 focus:ring-red-500': productForm.get('imageUrl')?.invalid && productForm.get('imageUrl')?.touched }">
+              @if (productForm.get('imageUrl')?.invalid && productForm.get('imageUrl')?.touched) {
+                <p class="mt-1 text-sm text-red-500 animate-pulse">
+                  Image URL is required
+                </p>
+              }
+            
+              <div class="h-48 flex items-center justify-center border-2 border-dashed border-gray-600 rounded-lg bg-[#121212] shadow-md p-2">
+                <img [src]="productForm.get('imageUrl')?.value" alt="Product image preview"
+                  class="max-h-full max-w-full object-contain rounded-lg"
+                  onerror="this.src='/assets/images/img_error.webp'; this.onerror=null;">
+              </div>
+            </div>
+          </div>
+        </section>
+      </form>
+    </div>
+  </div>
+  

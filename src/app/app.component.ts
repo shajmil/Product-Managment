@@ -11,19 +11,8 @@ import { HeaderComponent } from './core/components/header/header.component';
     RouterOutlet,
     HeaderComponent
   ],
-  template: `
-    <div class="min-h-screen flex flex-col bg-gray-50">
-      <app-header></app-header>
-      <main class="flex-grow">
-        <router-outlet></router-outlet>
-      </main>
-      <footer class="bg-gray-800 text-white py-6">
-        <div class="container mx-auto px-4 text-center">
-          <p>© {{currentYear}} Product Management System. All rights reserved.</p>
-        </div>
-      </footer>
-    </div>
-  `
+  templateUrl: `app.component.html`,
+  styleUrls: [`app.component.css`]
 })
 export class AppComponent {
   currentYear = new Date().getFullYear();
